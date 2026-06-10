@@ -13,11 +13,6 @@
     --text: #e0e6ed;
     --text-secondary: #8899aa;
     --accent: #4da6ff;
-    --accent2: #00d4aa;
-    --accent3: #ff9f43;
-    --accent4: #ff6b8a;
-    --accent5: #a78bfa;
-    --accent6: #38bdf8;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
@@ -34,108 +29,60 @@
   }
   .header h1 { font-size: 1.6rem; font-weight: 600; color: #fff; }
   .header p { font-size: 0.85rem; color: var(--text-secondary); margin-top: 4px; }
-
   .tabs {
-    display: flex;
-    justify-content: center;
-    gap: 0;
-    background: var(--surface);
-    border-bottom: 1px solid var(--border);
+    display: flex; justify-content: center; gap: 0;
+    background: var(--surface); border-bottom: 1px solid var(--border);
     position: sticky; top: 0; z-index: 100;
   }
   .tab-btn {
-    padding: 14px 32px;
-    border: none;
-    background: transparent;
-    color: var(--text-secondary);
-    font-size: 0.95rem;
-    cursor: pointer;
-    border-bottom: 3px solid transparent;
-    transition: all 0.2s;
-    font-family: inherit;
+    padding: 14px 32px; border: none; background: transparent;
+    color: var(--text-secondary); font-size: 0.95rem; cursor: pointer;
+    border-bottom: 3px solid transparent; transition: all 0.2s; font-family: inherit;
   }
   .tab-btn:hover { color: #fff; }
   .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
-
   .container { max-width: 1300px; margin: 0 auto; padding: 24px 20px; }
   .tab-content { display: none; }
   .tab-content.active { display: block; }
-
   .chart-wrapper {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 24px;
-    margin-bottom: 24px;
+    background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+    padding: 24px; margin-bottom: 24px;
   }
   .chart-wrapper h2 {
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: #fff;
-    margin-bottom: 16px;
-    padding-bottom: 8px;
-    border-bottom: 1px solid var(--border);
+    font-size: 1.1rem; font-weight: 600; color: #fff;
+    margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border);
   }
   .chart-wrapper canvas { width: 100%; max-height: 400px; }
-
   .charts-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-    margin-bottom: 24px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px;
   }
   @media (max-width: 768px) {
     .charts-grid { grid-template-columns: 1fr; }
     .tab-btn { padding: 12px 16px; font-size: 0.85rem; }
   }
-
   .table-wrapper {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    overflow: hidden;
+    background: var(--surface); border: 1px solid var(--border); border-radius: 8px; overflow: hidden;
   }
-  .table-wrapper h2 {
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: #fff;
-    padding: 20px 24px 0;
-  }
+  .table-wrapper h2 { font-size: 1.1rem; font-weight: 600; color: #fff; padding: 20px 24px 0; }
   .table-scroll { overflow-x: auto; padding: 16px 24px 24px; }
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.85rem;
-    white-space: nowrap;
-  }
+  table { width: 100%; border-collapse: collapse; font-size: 0.85rem; white-space: nowrap; }
   thead th {
-    background: #1e3044;
-    color: var(--accent);
-    padding: 10px 14px;
-    text-align: right;
-    font-weight: 600;
-    position: sticky; top: 0;
+    background: #1e3044; color: var(--accent); padding: 10px 14px;
+    text-align: right; font-weight: 600; position: sticky; top: 0;
     border-bottom: 2px solid var(--border);
   }
   thead th:first-child { text-align: left; min-width: 90px; }
   tbody td {
-    padding: 8px 14px;
-    text-align: right;
-    border-bottom: 1px solid rgba(42,63,85,0.5);
-    color: var(--text);
+    padding: 8px 14px; text-align: right;
+    border-bottom: 1px solid rgba(42,63,85,0.5); color: var(--text);
   }
   tbody td:first-child { text-align: left; color: var(--text-secondary); font-weight: 500; }
   tbody tr:hover { background: rgba(77,166,255,0.05); }
   tbody tr:nth-child(even) { background: rgba(255,255,255,0.015); }
   tbody tr:nth-child(even):hover { background: rgba(77,166,255,0.06); }
-
   .footer {
-    text-align: center;
-    padding: 24px;
-    color: var(--text-secondary);
-    font-size: 0.8rem;
-    border-top: 1px solid var(--border);
-    margin-top: 40px;
+    text-align: center; padding: 24px; color: var(--text-secondary);
+    font-size: 0.8rem; border-top: 1px solid var(--border); margin-top: 40px;
   }
 </style>
 </head>
@@ -144,225 +91,151 @@
   <h1>中国储能行业月度数据</h1>
   <p>数据来源：华泰电新储能规模数据库 · 2022-2026</p>
 </div>
-
 <div class="tabs">
   <button class="tab-btn active" data-tab="tab1">中标规模</button>
   <button class="tab-btn" data-tab="tab2">占比分析</button>
   <button class="tab-btn" data-tab="tab3">平均报价</button>
 </div>
-
 <div class="container">
-
-  <!-- Tab 1: 中标规模 -->
   <div class="tab-content active" id="tab1">
-    <div class="chart-wrapper">
-      <h2>月度中标规模趋势 (GWh)</h2>
-      <canvas id="chart1"></canvas>
-    </div>
-    <div class="table-wrapper">
-      <h2>中标规模明细数据</h2>
-      <div class="table-scroll" id="table1"></div>
-    </div>
+    <div class="chart-wrapper"><h2>月度中标规模趋势 (GWh)</h2><canvas id="chart1"></canvas></div>
+    <div class="table-wrapper"><h2>中标规模明细数据</h2><div class="table-scroll" id="table1"></div></div>
   </div>
-
-  <!-- Tab 2: 占比分析 -->
   <div class="tab-content" id="tab2">
     <div class="charts-grid">
-      <div class="chart-wrapper">
-        <h2>各类型占比 (%)</h2>
-        <canvas id="chart2a"></canvas>
-      </div>
-      <div class="chart-wrapper">
-        <h2>各类型规模 (GWh)</h2>
-        <canvas id="chart2b"></canvas>
-      </div>
+      <div class="chart-wrapper"><h2>各类型占比 (%)</h2><canvas id="chart2a"></canvas></div>
+      <div class="chart-wrapper"><h2>各类型规模 (GWh)</h2><canvas id="chart2b"></canvas></div>
     </div>
-    <div class="table-wrapper">
-      <h2>占比明细数据</h2>
-      <div class="table-scroll" id="table2"></div>
-    </div>
+    <div class="table-wrapper"><h2>占比明细数据</h2><div class="table-scroll" id="table2"></div></div>
   </div>
-
-  <!-- Tab 3: 平均报价 -->
   <div class="tab-content" id="tab3">
-    <div class="chart-wrapper">
-      <h2>月度平均报价趋势 (元/Wh)</h2>
-      <canvas id="chart3"></canvas>
-    </div>
-    <div class="table-wrapper">
-      <h2>平均报价明细数据</h2>
-      <div class="table-scroll" id="table3"></div>
-    </div>
+    <div class="chart-wrapper"><h2>月度平均报价趋势 (元/Wh)</h2><canvas id="chart3"></canvas></div>
+    <div class="table-wrapper"><h2>平均报价明细数据</h2><div class="table-scroll" id="table3"></div></div>
   </div>
 </div>
-
 <div class="footer">
   中国储能行业月度数据 &copy; 2026 · 数据来源于华泰电新储能规模数据库
 </div>
-
 <script>
-// ── Embedded data ──
-const DATA = {"中标规模":{"headers":["","直流侧（GWh）","储能EPC中标规模（GWh）","储能系统中标规模（GWh）","合计（GW）","合计（GWh）"],"rows":[["22年1月",null,null,null,null,null],["22年2月",null,null,null,null,null],["22年3月",null,null,null,null,null],["22年4月",null,null,null,null,null],["22年5月",null,null,null,0.867,1.734],["22年6月",null,null,null,2.213,4.472],["22年7月",null,null,null,0.973,2.082],["22年8月",null,null,null,1.09,2.13],["22年9月",null,2.9624,0.2576,1.64,3.22],["22年10月",null,0.9177,1.7742,3.8,14.65],["22年11月",null,1.0433,1.7385,1.241,5.364],["22年12月",0.217,1.259,1.7443,1.406,3.358],["23年1月",1.4957,1.4957,0.2286,0.686,2.583],["23年2月",1.353,0.8356,0.8935,0.815,3.094],["23年3月",0.0077,0.4595,2.3889,1.77,4.24],["23年4月",null,1.487,1.6094,3.08,7.81],["23年5月",0.4872,0.4408,2.292,3.683,9.253],["23年6月",0.4566,1.5008,0.6698,2.506,5.432],["23年7月",null,2.5762,8.1983,3.27,7.53],["23年8月",null,6.226,4.774,2.08,4.91],["23年9月",0.8437,2.0383,6.3217,6.77,18.37],["23年10月",null,5.8113,5.1887,3.63,7.55],["23年11月",0.5423,2.8831,7.3777,5.83,20.52],["23年12月",0.4136,2.0317,6.1776,4.49,21.29],["24年1月",null,6.4317,4.5683,2.54,5.11],["24年2月",0.6589,3.0382,7.3029,3.77,10],["24年3月",1.551,7.513,1.518,3.91,10.64],["24年4月",null,3.993,5.621,5.05,15.9],["24年5月",2.882,4.576,3.542,3.08,11],["24年6月",null,null,null,4.32,10.29],["24年7月",0.5542,4.5328,14.6872,7.79,19.22],["24年8月",0.664,6.3,4.94,4.15,11.24],["24年9月",null,5.9195,10.4305,7.43,16.35],["24年10月",null,7.4991,6.1109,4.62,13.61],["24年11月",null,10.4512,5.6188,6.45,16.07],["24年12月",3.49,20.41,11.45,12.49,31.86],["25年1月",null,9.71,50.98,7.71,60.69],["25年2月",null,7.31,7.59,4.6,14.9],["25年3月",1,17.2,9.9,7.5,27.1],["25年4月",null,18.6,11.6,10.2,30.2],["25年5月",null,17.8,2.4,6.57,20.2],["25年6月",1.2,19.9,3.6,8.5,23.5],["25年7月",1.73,22,3.8,9,25.8],["25年8月",null,47.2,22.2,25.8,69.4],["25年9月",8.3,22.3,11,11.7,33.3],["25年10月",0.18,18.2,11.2,10,29.4],["25年11月",null,21.1,8.6,10,29.7],["25年12月",2,46.5,9.3,22.5,55.8],["26年1月",0.3,31.3,4.7,12.3,36],["26年2月",8.8,19.7,17.2,13.4,36.9],["26年3月",2,null,null,17.8,50.5],["26年4月",null,null,null,12.8,32.6],["26年5月",0.288,null,null,15.5,39.2]]},"占比":{"headers":["占比","独立储能","可再生能源储能","集采","用户侧","火储联合","规模","独立储能","可再生能源储能","集采","用户侧","火储联合"],"rows":[["24年1月",0.654,0.2756,0.0391,0.0313,0,"24年1月",3.3419,1.4083,0.1998,0.1599,0],["24年2月",0.4816,0.2018,0.3097,0.0062,0.0007,"24年2月",4.816,2.018,3.097,0.062,0.007],["24年3月",0.64,0.157,0.194,0.009,0.0002,"24年3月",6.8096,1.6705,2.0642,0.0958,0.0021],["24年4月",0.361,0.092,0.516,0.028,0.0021,"24年4月",5.7399,1.4628,8.2044,0.4452,0.0334],["24年5月",0.537,0.092,0.362,0.009,0,"24年5月",5.907,1.012,3.982,0.099,0],["24年6月",0.681,0.274,0.015,0.031,0,"24年6月",7.0075,2.8195,0.1543,0.319,0],["24年7月",0.155,0.265,0.541,0.04,0,"24年7月",2.9791,5.0933,10.398,0.7688,0],["24年8月",0.774,0.202,0,0.024,0,"24年8月",8.7,2.27,0,0.27,0],["24年9月",0.4771,0.2294,0.2446,0.0489,0,"24年9月",7.8,3.75,4,0.8,0],["24年10月",0.743,0.212,0.003,0.041,0,"24年10月",10.1122,2.8853,0.0408,0.558,0],["24年11月",0.718,0.136,0.078,0.071,0,"24年11月",11.5383,2.1855,1.2535,1.141,0],["24年12月",0.664,0.295,0.019,0.02,0.002,"24年12月",21.155,9.3987,0.6053,0.6372,0.0637],["25年1月",0.211,0.029,0.742,0.018,0,"25年1月",12.8056,1.76,45.032,1.0924,0],["25年2月",0.677,0.114,0.134,0.074,0,"25年2月",10.0873,1.6986,1.9966,1.1026,0],["25年3月",0.714,0.046,0.221,0.018,0,"25年3月",19.3494,1.2466,5.9891,0.4878,0],["25年4月",0.543,0.132,0.275,0.049,0,"25年4月",16.3986,3.9864,8.305,1.4798,0],["25年5月",0.864,0.078,0,0.058,0,"25年5月",17.4528,1.5756,0,1.1716,0],["25年6月",0.88,0.02,0,0.1,0,"25年6月",20.68,0.5,0,2.3,0],["25年7月",0.92,0.038,0,0.031,0.009,"25年7月",23.736,0.9804,0,0.7998,0.2322],["25年8月",0.555,0.045,0.383,0.018,0.001,"25年8月",38.5,3.1,26.6,1.2,0.07],["25年9月",0.807,0.075,0.06,0.057,0.002,"25年9月",26.8731,2.4975,1.998,1.8981,0.0666],["25年10月",0.921,0.055,0.003,0.019,0.001,"25年10月",27.0774,1.617,0.0882,0.5586,0.0294],["25年11月",0.894,0.052,0.011,0.042,0,"25年11月",26.5518,1.5444,0.3267,1.2474,0],["25年12月",0.8943,0.03,0.0357,0.04,0,"25年12月",49.9,1.674,1.994,2.232,0],["26年1月",0.95,0.03,0,0.02,0,"26年1月",34.2,1.08,0,0.72,0],["26年2月",0.58,0.05,0.36,0.04,0,"26年2月",21.402,1.845,13.284,1.476,0],["26年3月",0.6,0.03,0.35,0.02,0,"26年3月",30.3,1.515,17.675,1.01,0],["26年4月",0.85,0.09,0.03,0.03,0,"26年4月",27.71,2.934,0.978,0.978,0],["26年5月",0.84,0.05,0.1,0.01,0,"26年5月",32.928,1.96,3.92,0.392,0]]},"平均报价":{"headers":["平均报价（元/Wh）","储能EPC-2小时","储能EPC-4小时","储能系统2小时","储能系统4小时","方形铁锂电池包","储能系统（除电池包外）"],"rows":[["22年1月",null,null,1.701,null,0.7597,null],["22年2月",null,null,1.72,null,0.785,null],["22年3月",null,null,1.614,null,0.7994,null],["22年4月",null,null,1.611,null,0.8932,null],["22年5月",1.88,null,1.517,null,0.9832,null],["22年6月",1.82,1.77,1.554,null,0.975,null],["22年7月",2.11,null,1.565,null,0.975,null],["22年8月",1.71,null,1.52,null,0.975,null],["22年9月",2.059,null,1.556,null,0.975,null],["22年10月",1.753,null,1.553,null,1.0075,null],["22年11月",1.976,null,1.532,null,1.02,null],["22年12月",1.87,null,1.596,null,1.02,null],["23年1月",1.66,1.85,1.47,"-",1.02,null],["23年2月",1.975,null,1.438,null,1.01,null],["23年3月",1.769,null,1.346,null,0.9163,null],["23年4月",1.891,null,1.298,null,0.825,null],["23年5月",1.655,null,1.115,null,0.825,null],["23年6月",1.578,null,1.115,null,0.825,null],["23年7月",1.604,null,1.123,null,0.8179,null],["23年8月",1.457,null,1.052,null,0.745,null],["23年9月",1.441,null,1.051,null,0.708,null],["23年10月",1.605,null,0.94,null,0.66,null],["23年11月",1.829,null,0.874,null,0.6141,null],["23年12月",1.421,null,0.844,null,0.6,null],["24年1月",1.351,null,0.819,null,0.5645,null],["24年2月",1.496,null,0.814,null,0.55,null],["24年3月",1.32,null,0.69,null,0.546,null],["24年4月",1.32,null,0.84,null,0.545,null],["24年5月",1.36,null,0.66,null,0.5393,null],["24年6月",1.3,null,0.62,null,0.5342,null],["24年7月",1.212,null,0.592,null,0.53,null],["24年8月",1.131,null,0.689,null,0.53,null],["24年9月",1.057,null,0.578,null,0.525,null],["24年10月",1.045,null,0.6,null,0.525,null],["24年11月",1.132,null,0.624,null,0.525,null],["24年12月",1.24,null,0.695,null,0.525,null],["25年1月",1.098,null,0.61,null,0.53,null],["25年2月",1.083,null,0.597,null,0.515,null],["25年3月",1.083,null,0.669,null,0.515,null],["25年4月",0.99,null,0.59,null,0.515,null],["25年5月",0.946,null,0.55,null,0.515,null],["25年6月",1.041,0.763,0.641,0.432,0.475,null],["25年7月",1.037,0.902,0.526,0.417,0.475,null],["25年8月",1.062,0.904,0.491,0.431,0.475,null],["25年9月",1.051,0.929,0.641,0.464,0.475,null],["25年10月",1.044,0.796,0.628,0.52,0.48,null],["25年11月",1.05,0.925,0.594,0.494,0.475,null],["25年12月",1.096,0.99,0.604,0.559,0.475,null],["26年1月",1.04,0.898,0.59,0.592,null,null],["26年2月",1.088,0.951,0.579,0.538,null,null],["26年3月",1.096,0.91,0.679,0.533,null,null],["26年4月",1.069,0.949,0.65,0.52,null,null],["26年5月",1.035,1.018,0.654,0.516,null,null]]}};
-
-// ── Color palette for chart lines ──
-const COLORS = ['#4da6ff','#00d4aa','#ff9f43','#ff6b8a','#a78bfa','#38bdf8','#fbbf24'];
-
-// ── Helpers ──
-function fmt(v) {
-  if (v === null || v === undefined || v === '' || v === '-') return '-';
-  if (typeof v === 'number') return v.toLocaleString('zh-CN', {maximumFractionDigits: 4});
-  return v;
-}
-
-function num(v) {
-  if (v === null || v === undefined || v === '' || v === '-') return null;
-  const n = Number(v);
-  return isNaN(n) ? null : n;
-}
-
-function datesFromRows(rows) { return rows.map(r => r[0]).filter(d => d); }
-
-function makeDataset(label, data, color, hidden) {
-  return { label, data, borderColor: color, backgroundColor: color + '20', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, tension: 0.3, fill: false, hidden: hidden || false };
-}
-
-const chartInstances = {};
-
-function destroyChart(key) {
-  if (chartInstances[key]) { chartInstances[key].destroy(); chartInstances[key] = null; }
-}
-
-// ── Tabs ──
-document.querySelectorAll('.tab-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-    btn.classList.add('active');
-    document.getElementById(btn.dataset.tab).classList.add('active');
-    // Redraw charts after display change
-    setTimeout(() => {
-      Object.keys(chartInstances).forEach(k => {
-        if (chartInstances[k]) chartInstances[k].resize();
+fetch('data.json')
+  .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+  .then(DATA => {
+    const COLORS = ['#4da6ff','#00d4aa','#ff9f43','#ff6b8a','#a78bfa','#38bdf8','#fbbf24'];
+    function fmt(v) {
+      if (v === null || v === undefined || v === '' || v === '-') return '-';
+      if (typeof v === 'number') return v.toLocaleString('zh-CN', {maximumFractionDigits: 4});
+      return v;
+    }
+    function num(v) {
+      if (v === null || v === undefined || v === '' || v === '-') return null;
+      const n = Number(v); return isNaN(n) ? null : n;
+    }
+    function datesFromRows(rows) { return rows.map(r => r[0]).filter(d => d); }
+    function makeDataset(label, data, color, hidden) {
+      return { label, data, borderColor: color, backgroundColor: color + '20', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, tension: 0.3, fill: false, hidden: hidden || false };
+    }
+    const chartInstances = {};
+    function destroyChart(key) {
+      if (chartInstances[key]) { chartInstances[key].destroy(); chartInstances[key] = null; }
+    }
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById(btn.dataset.tab).classList.add('active');
+        setTimeout(() => {
+          Object.keys(chartInstances).forEach(k => { if (chartInstances[k]) chartInstances[k].resize(); });
+        }, 50);
       });
-    }, 50);
-  });
-});
-
-// ── Build tables ──
-function buildTable(containerId, headers, rows) {
-  const h = headers.filter(h => h !== '');
-  // If first header is empty, rows have date in first col
-  const hasDateCol = headers[0] === '' || headers[0] === '占比' || headers[0].includes('平均报价');
-  const useHeaders = hasDateCol ? headers.slice(1) : headers;
-
-  let html = '<table><thead><tr>';
-  if (hasDateCol) html += '<th>日期</th>';
-  useHeaders.forEach(h => { html += '<th>' + h + '</th>'; });
-  html += '</tr></thead><tbody>';
-
-  rows.forEach(row => {
-    html += '<tr>';
-    if (hasDateCol) html += '<td>' + row[0] + '</td>';
-    const dataCols = hasDateCol ? row.slice(1) : row;
-    dataCols.forEach((v, i) => {
-      if (i < useHeaders.length) html += '<td>' + fmt(v) + '</td>';
     });
-    html += '</tr>';
-  });
-  html += '</tbody></table>';
-  document.getElementById(containerId).innerHTML = html;
-}
-
-// ── Build charts ──
-function buildChart(canvasId, key, labels, datasets) {
-  destroyChart(key);
-  const ctx = document.getElementById(canvasId).getContext('2d');
-  chartInstances[key] = new Chart(ctx, {
-    type: 'line',
-    data: { labels, datasets },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      interaction: { mode: 'index', intersect: false },
-      plugins: {
-        legend: {
-          position: 'bottom',
-          labels: { color: '#8899aa', usePointStyle: true, padding: 20, font: { size: 12 } }
-        },
-        tooltip: {
-          backgroundColor: '#1a2736', borderColor: '#2a3f55', borderWidth: 1,
-          titleColor: '#fff', bodyColor: '#e0e6ed',
-          callbacks: {
-            label: ctx => ctx.dataset.label + ': ' + (ctx.parsed.y !== null ? ctx.parsed.y.toLocaleString('zh-CN', {maximumFractionDigits: 4}) : '-')
+    function buildTable(containerId, headers, rows) {
+      const hasDateCol = headers[0] === '' || headers[0] === '占比' || headers[0].includes('平均报价');
+      const useHeaders = hasDateCol ? headers.slice(1) : headers;
+      let html = '<table><thead><tr>';
+      if (hasDateCol) html += '<th>日期</th>';
+      useHeaders.forEach(h => { html += '<th>' + h + '</th>'; });
+      html += '</tr></thead><tbody>';
+      rows.forEach(row => {
+        html += '<tr>';
+        if (hasDateCol) html += '<td>' + row[0] + '</td>';
+        const dataCols = hasDateCol ? row.slice(1) : row;
+        dataCols.forEach((v, i) => { if (i < useHeaders.length) html += '<td>' + fmt(v) + '</td>'; });
+        html += '</tr>';
+      });
+      html += '</tbody></table>';
+      document.getElementById(containerId).innerHTML = html;
+    }
+    function buildChart(canvasId, key, labels, datasets) {
+      destroyChart(key);
+      const ctx = document.getElementById(canvasId).getContext('2d');
+      chartInstances[key] = new Chart(ctx, {
+        type: 'line', data: { labels, datasets },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          interaction: { mode: 'index', intersect: false },
+          plugins: {
+            legend: { position: 'bottom', labels: { color: '#8899aa', usePointStyle: true, padding: 20, font: { size: 12 } } },
+            tooltip: {
+              backgroundColor: '#1a2736', borderColor: '#2a3f55', borderWidth: 1,
+              titleColor: '#fff', bodyColor: '#e0e6ed',
+              callbacks: { label: ctx => ctx.dataset.label + ': ' + (ctx.parsed.y !== null ? ctx.parsed.y.toLocaleString('zh-CN', {maximumFractionDigits: 4}) : '-') }
+            }
+          },
+          scales: {
+            x: { ticks: { color: '#8899aa', maxTicksLimit: 20, font: { size: 10 } }, grid: { color: 'rgba(42,63,85,0.3)' } },
+            y: { ticks: { color: '#8899aa', font: { size: 11 } }, grid: { color: 'rgba(42,63,85,0.3)' }, beginAtZero: false }
           }
         }
-      },
-      scales: {
-        x: {
-          ticks: { color: '#8899aa', maxTicksLimit: 20, font: { size: 10 } },
-          grid: { color: 'rgba(42,63,85,0.3)' }
-        },
-        y: {
-          ticks: { color: '#8899aa', font: { size: 11 } },
-          grid: { color: 'rgba(42,63,85,0.3)' },
-          beginAtZero: false
-        }
-      }
+      });
     }
+    // Tab 1: 中标规模
+    (function() {
+      const d = DATA['中标规模'];
+      const labels = datesFromRows(d.rows);
+      const datasets = [];
+      for (let i = 1; i < d.headers.length; i++) {
+        const seriesData = d.rows.map(r => num(r[i]));
+        datasets.push(makeDataset(d.headers[i], seriesData, COLORS[i-1], seriesData.every(v => v === null)));
+      }
+      buildChart('chart1', 'chart1', labels, datasets);
+      buildTable('table1', d.headers, d.rows);
+    })();
+    // Tab 2: 占比
+    (function() {
+      const d = DATA['占比'];
+      const labels = d.rows.map(r => r[0]);
+      const pctDatasets = [];
+      for (let i = 0; i < 5; i++) {
+        const seriesData = d.rows.map(r => num(r[i+1]));
+        pctDatasets.push(makeDataset(d.headers[i+1], seriesData, COLORS[i], seriesData.every(v => v === 0 || v === null)));
+      }
+      buildChart('chart2a', 'chart2a', labels, pctDatasets);
+      const scaleDatasets = [];
+      for (let i = 0; i < 5; i++) {
+        const seriesData = d.rows.map(r => num(r[i+7]));
+        scaleDatasets.push(makeDataset(d.headers[i+7], seriesData, COLORS[i], seriesData.every(v => v === 0 || v === null)));
+      }
+      buildChart('chart2b', 'chart2b', labels, scaleDatasets);
+      buildTable('table2', d.headers, d.rows);
+    })();
+    // Tab 3: 平均报价
+    (function() {
+      const d = DATA['平均报价'];
+      const labels = datesFromRows(d.rows);
+      const datasets = [];
+      for (let i = 1; i < d.headers.length; i++) {
+        const seriesData = d.rows.map(r => num(r[i]));
+        datasets.push(makeDataset(d.headers[i], seriesData, COLORS[i-1], seriesData.every(v => v === null)));
+      }
+      buildChart('chart3', 'chart3', labels, datasets);
+      buildTable('table3', d.headers, d.rows);
+    })();
+  })
+  .catch(e => {
+    console.error('Data load error:', e);
+    document.querySelector('.container').innerHTML = '<div style="text-align:center;padding:60px;color:#ff6b8a;"><h2>数据加载失败</h2><p>' + e.message + '</p></div>';
   });
-}
-
-// ── Render Tab 1: 中标规模 ──
-(function() {
-  const d = DATA['中标规模'];
-  const labels = datesFromRows(d.rows);
-  const numCols = d.headers.length - 1; // skip empty first header
-  const datasets = [];
-  for (let i = 1; i < d.headers.length; i++) {
-    const seriesData = d.rows.map(r => num(r[i]));
-    datasets.push(makeDataset(d.headers[i], seriesData, COLORS[i-1], seriesData.every(v => v === null)));
-  }
-  buildChart('chart1', 'chart1', labels, datasets);
-  buildTable('table1', d.headers, d.rows);
-})();
-
-// ── Render Tab 2: 占比 ──
-(function() {
-  const d = DATA['占比'];
-  const labels = d.rows.map(r => r[0]);
-  // Percentage chart: cols 1-5 (独立储能, 可再生能源储能, 集采, 用户侧, 火储联合)
-  const pctDatasets = [];
-  const pctHeaders = d.headers.slice(1, 6);
-  for (let i = 0; i < pctHeaders.length; i++) {
-    const seriesData = d.rows.map(r => num(r[i+1]));
-    pctDatasets.push(makeDataset(pctHeaders[i], seriesData, COLORS[i], seriesData.every(v => v === 0 || v === null)));
-  }
-  buildChart('chart2a', 'chart2a', labels, pctDatasets);
-  // Scale chart: cols 7-11 (独立储能, 可再生能源储能, 集采, 用户侧, 火储联合)
-  const scaleDatasets = [];
-  const scaleHeaders = d.headers.slice(7, 12);
-  for (let i = 0; i < scaleHeaders.length; i++) {
-    const seriesData = d.rows.map(r => num(r[i+7]));
-    scaleDatasets.push(makeDataset(scaleHeaders[i], seriesData, COLORS[i], seriesData.every(v => v === 0 || v === null)));
-  }
-  buildChart('chart2b', 'chart2b', labels, scaleDatasets);
-  // Combined table: show both percentage and scale sections
-  const allHeaders = d.headers;
-  buildTable('table2', allHeaders, d.rows);
-})();
-
-// ── Render Tab 3: 平均报价 ──
-(function() {
-  const d = DATA['平均报价'];
-  const labels = datesFromRows(d.rows);
-  const datasets = [];
-  for (let i = 1; i < d.headers.length; i++) {
-    const seriesData = d.rows.map(r => num(r[i]));
-    datasets.push(makeDataset(d.headers[i], seriesData, COLORS[i-1], seriesData.every(v => v === null)));
-  }
-  buildChart('chart3', 'chart3', labels, datasets);
-  buildTable('table3', d.headers, d.rows);
-})();
 </script>
 </body>
 </html>
