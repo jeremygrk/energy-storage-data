@@ -85,6 +85,41 @@ for sheet_name in wb.sheetnames:
         all_data[sheet_name] = {'headers': headers, 'rows': rows}
         print(f'{sheet_name}: {len(rows)} rows, {len(headers)} cols')
 
+    elif sheet_name == '逆变器出口数据':
+        # Date format "202001" (YYYYMM, stored as int), last row is 合计
+        headers = []
+        for cell in ws[1]:
+            val = cell.value
+            headers.append(str(val) if val is not None else '')
+        rows = []
+        for raw_row in ws.iter_rows(min_row=2, values_only=True):
+            if all(c is None or str(c).strip() == '' for c in raw_row):
+                continue
+            # Check for 合计 row
+            first_val = raw_row[0]
+            if first_val is not None and str(first_val).strip() in ('合计', '合計', '總計', '总计'):
+                continue
+            clean_row = []
+            for i, c in enumerate(raw_row):
+                if c is None:
+                    clean_row.append(None)
+                elif isinstance(c, str) and c.startswith('='):
+                    clean_row.append(None)
+                elif i == 0 and isinstance(c, (int, float)):
+                    # Convert date int 202001 → "20年1月"
+                    s = str(int(c))
+                    if len(s) == 6:
+                        clean_row.append(s[2:4] + '年' + str(int(s[4:6])) + '月')
+                    else:
+                        clean_row.append(s)
+                elif isinstance(c, (int, float)):
+                    clean_row.append(round(c, 4))
+                else:
+                    clean_row.append(str(c))
+            rows.append(clean_row)
+        all_data[sheet_name] = {'headers': headers, 'rows': rows}
+        print(f'{sheet_name}: {len(rows)} rows, {len(headers)} cols')
+
     else:
         # Standard format: row 1 = headers, rows 2+ = data
         headers = []
