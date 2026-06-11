@@ -35,9 +35,10 @@
     position: sticky; top: 0; z-index: 100;
   }
   .tab-btn {
-    padding: 14px 32px; border: none; background: transparent;
-    color: var(--text-secondary); font-size: 0.95rem; cursor: pointer;
+    padding: 14px 24px; border: none; background: transparent;
+    color: var(--text-secondary); font-size: 0.92rem; cursor: pointer;
     border-bottom: 3px solid transparent; transition: all 0.2s; font-family: inherit;
+    white-space: nowrap;
   }
   .tab-btn:hover { color: #fff; }
   .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
@@ -58,7 +59,7 @@
   }
   @media (max-width: 768px) {
     .charts-grid { grid-template-columns: 1fr; }
-    .tab-btn { padding: 12px 16px; font-size: 0.85rem; }
+    .tab-btn { padding: 10px 12px; font-size: 0.8rem; }
   }
   .table-wrapper {
     background: var(--surface); border: 1px solid var(--border); border-radius: 8px; overflow: hidden;
@@ -94,17 +95,44 @@
 <div class="tabs">
   <button class="tab-btn active" data-tab="tab1">中标规模</button>
   <button class="tab-btn" data-tab="tab2">平均报价</button>
+  <button class="tab-btn" data-tab="tab3">意大利储能装机</button>
+  <button class="tab-btn" data-tab="tab4">德国储能装机</button>
+  <button class="tab-btn" data-tab="tab5">美国储能装机</button>
 </div>
 <div class="container">
+  <!-- Tab 1: 中标规模 -->
   <div class="tab-content active" id="tab1">
     <div class="chart-wrapper"><h2>月度中标规模趋势 — 合计 (GW)</h2><canvas id="chart1a"></canvas></div>
     <div class="chart-wrapper"><h2>月度中标规模趋势 — 合计 (GWh)</h2><canvas id="chart1b"></canvas></div>
     <div class="chart-wrapper"><h2>各类型中标规模 (GWh)</h2><canvas id="chart1c"></canvas></div>
     <div class="table-wrapper"><h2>中标规模明细数据</h2><div class="table-scroll" id="table1"></div></div>
   </div>
+
+  <!-- Tab 2: 平均报价 -->
   <div class="tab-content" id="tab2">
     <div class="chart-wrapper"><h2>月度平均报价趋势 (元/Wh)</h2><canvas id="chart2"></canvas></div>
     <div class="table-wrapper"><h2>平均报价明细数据</h2><div class="table-scroll" id="table2"></div></div>
+  </div>
+
+  <!-- Tab 3: 意大利储能装机 -->
+  <div class="tab-content" id="tab3">
+    <div class="chart-wrapper"><h2>装机容量趋势 (MW)</h2><canvas id="chart3a"></canvas></div>
+    <div class="chart-wrapper"><h2>装机容量趋势 (MWh)</h2><canvas id="chart3b"></canvas></div>
+    <div class="chart-wrapper"><h2>装机容量趋势 (GW)</h2><canvas id="chart3c"></canvas></div>
+    <div class="table-wrapper"><h2>意大利储能装机明细数据</h2><div class="table-scroll" id="table3"></div></div>
+  </div>
+
+  <!-- Tab 4: 德国储能装机 -->
+  <div class="tab-content" id="tab4">
+    <div class="chart-wrapper"><h2>月度装机趋势 — 合计 (MW)</h2><canvas id="chart4"></canvas></div>
+    <div class="table-wrapper"><h2>德国储能装机明细数据</h2><div class="table-scroll" id="table4"></div></div>
+  </div>
+
+  <!-- Tab 5: 美国储能装机 -->
+  <div class="tab-content" id="tab5">
+    <div class="chart-wrapper"><h2>装机功率趋势 (MW)</h2><canvas id="chart5a"></canvas></div>
+    <div class="chart-wrapper"><h2>装机容量趋势 (MWh)</h2><canvas id="chart5b"></canvas></div>
+    <div class="table-wrapper"><h2>美国储能装机明细数据</h2><div class="table-scroll" id="table5"></div></div>
   </div>
 </div>
 <div class="footer">
@@ -114,7 +142,7 @@
 fetch('data.json')
   .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
   .then(DATA => {
-    const COLORS = ['#4da6ff','#00d4aa','#ff9f43','#ff6b8a','#a78bfa','#38bdf8','#fbbf24'];
+    const COLORS = ['#4da6ff','#00d4aa','#ff9f43','#ff6b8a','#a78bfa','#38bdf8','#fbbf24','#ff6b8a','#fb923c','#34d399'];
     function fmt(v) {
       if (v === null || v === undefined || v === '' || v === '-') return '-';
       if (typeof v === 'number') return v.toLocaleString('zh-CN', {maximumFractionDigits: 4});
@@ -131,6 +159,8 @@ fetch('data.json')
     function destroyChart(key) {
       if (chartInstances[key]) { chartInstances[key].destroy(); chartInstances[key] = null; }
     }
+
+    // Tab switching
     document.querySelectorAll('.tab-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -142,23 +172,25 @@ fetch('data.json')
         }, 50);
       });
     });
+
     function buildTable(containerId, headers, rows) {
-      const hasDateCol = headers[0] === '' || headers[0] === '占比' || headers[0].includes('平均报价');
+      const hasDateCol = !headers[0] || headers[0] === '' || headers[0] === '占比' || headers[0].includes('平均报价');
       const useHeaders = hasDateCol ? headers.slice(1) : headers;
       let html = '<table><thead><tr>';
       if (hasDateCol) html += '<th>日期</th>';
-      useHeaders.forEach(h => { html += '<th>' + h + '</th>'; });
+      useHeaders.forEach(h => { if (h !== '') html += '<th>' + h + '</th>'; });
       html += '</tr></thead><tbody>';
       rows.forEach(row => {
         html += '<tr>';
         if (hasDateCol) html += '<td>' + row[0] + '</td>';
         const dataCols = hasDateCol ? row.slice(1) : row;
-        dataCols.forEach((v, i) => { if (i < useHeaders.length) html += '<td>' + fmt(v) + '</td>'; });
+        dataCols.forEach((v, i) => { if (i < useHeaders.length && useHeaders[i] !== '') html += '<td>' + fmt(v) + '</td>'; });
         html += '</tr>';
       });
       html += '</tbody></table>';
       document.getElementById(containerId).innerHTML = html;
     }
+
     function buildChart(canvasId, key, labels, datasets) {
       destroyChart(key);
       const ctx = document.getElementById(canvasId).getContext('2d');
@@ -183,8 +215,8 @@ fetch('data.json')
       });
     }
 
-    // Build a year×month chart: x-axis = 1–12月, each year is a series
-    function buildYearMonthChart(rows, colIndex, canvasId, key, title) {
+    // Build year×month chart: x-axis = 1–12月, each year is a series
+    function buildYearMonthChart(rows, colIndex, canvasId, key) {
       const years = {};
       rows.forEach(row => {
         const label = row[0];
@@ -206,14 +238,35 @@ fetch('data.json')
       buildChart(canvasId, key, monthLabels, datasets);
     }
 
-    // Tab 1: 中标规模
+    // Build year×quarter chart: x-axis = Q1–Q4, each year is a series
+    function buildYearQuarterChart(rows, colIndex, canvasId, key) {
+      const years = {};
+      rows.forEach(row => {
+        const label = row[0];
+        const match = label.match(/^(\d{2})年Q([1-4])$/);
+        if (match) {
+          const year = '20' + match[1];
+          const quarter = parseInt(match[2]);
+          const val = num(row[colIndex]);
+          if (!years[year]) years[year] = new Array(4).fill(null);
+          years[year][quarter - 1] = val;
+        }
+      });
+      const yearKeys = Object.keys(years).sort();
+      const quarterLabels = ['Q1', 'Q2', 'Q3', 'Q4'];
+      const datasets = yearKeys.map((year, i) => {
+        const data = years[year];
+        return makeDataset(year + '年', data, COLORS[i], data.every(v => v === null));
+      });
+      buildChart(canvasId, key, quarterLabels, datasets);
+    }
+
+    // ============ Tab 1: 中标规模 ============
     (function() {
       const d = DATA['中标规模'];
-      // Chart 1a: 合计 (GW) — year×month
       buildYearMonthChart(d.rows, 4, 'chart1a', 'chart1a');
-      // Chart 1b: 合计 (GWh) — year×month
       buildYearMonthChart(d.rows, 5, 'chart1b', 'chart1b');
-      // Chart 1c: 各类型中标规模 (GWh) — continuous month labels from 占比 data
+      // 各类型中标规模 — continuous labels from 占比
       const shareData = DATA['占比'];
       const typeLabels = shareData.rows.map(r => r[6]);
       const typeNames = ['独立储能', '可再生能源储能', '集采', '用户侧', '火储联合'];
@@ -223,11 +276,10 @@ fetch('data.json')
         typeDatasets.push(makeDataset(typeNames[i], seriesData, COLORS[i], seriesData.every(v => v === null)));
       }
       buildChart('chart1c', 'chart1c', typeLabels, typeDatasets);
-      // Table
       buildTable('table1', d.headers, d.rows);
     })();
 
-    // Tab 2: 平均报价
+    // ============ Tab 2: 平均报价 ============
     (function() {
       const d = DATA['平均报价'];
       const labels = d.rows.map(r => r[0]);
@@ -238,6 +290,31 @@ fetch('data.json')
       }
       buildChart('chart2', 'chart2', labels, datasets);
       buildTable('table2', d.headers, d.rows);
+    })();
+
+    // ============ Tab 3: 意大利储能装机 ============
+    (function() {
+      const d = DATA['意大利储能装机'];
+      buildYearQuarterChart(d.rows, 1, 'chart3a', 'chart3a');
+      buildYearQuarterChart(d.rows, 2, 'chart3b', 'chart3b');
+      buildYearQuarterChart(d.rows, 5, 'chart3c', 'chart3c');
+      buildTable('table3', d.headers, d.rows);
+    })();
+
+    // ============ Tab 4: 德国储能装机 ============
+    (function() {
+      const d = DATA['德国储能装机'];
+      // Year×month chart for 合计 (index 4)
+      buildYearMonthChart(d.rows, 4, 'chart4', 'chart4');
+      buildTable('table4', d.headers, d.rows);
+    })();
+
+    // ============ Tab 5: 美国储能装机 ============
+    (function() {
+      const d = DATA['美国储能装机'];
+      buildYearMonthChart(d.rows, 1, 'chart5a', 'chart5a');
+      buildYearMonthChart(d.rows, 2, 'chart5b', 'chart5b');
+      buildTable('table5', d.headers, d.rows);
     })();
   })
   .catch(e => {
