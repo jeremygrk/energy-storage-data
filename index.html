@@ -93,24 +93,18 @@
 </div>
 <div class="tabs">
   <button class="tab-btn active" data-tab="tab1">中标规模</button>
-  <button class="tab-btn" data-tab="tab2">占比分析</button>
-  <button class="tab-btn" data-tab="tab3">平均报价</button>
+  <button class="tab-btn" data-tab="tab2">平均报价</button>
 </div>
 <div class="container">
   <div class="tab-content active" id="tab1">
-    <div class="chart-wrapper"><h2>月度中标规模趋势 (GWh)</h2><canvas id="chart1"></canvas></div>
+    <div class="chart-wrapper"><h2>月度中标规模趋势 — 合计 (GW)</h2><canvas id="chart1a"></canvas></div>
+    <div class="chart-wrapper"><h2>月度中标规模趋势 — 合计 (GWh)</h2><canvas id="chart1b"></canvas></div>
+    <div class="chart-wrapper"><h2>各类型中标规模 (GWh)</h2><canvas id="chart1c"></canvas></div>
     <div class="table-wrapper"><h2>中标规模明细数据</h2><div class="table-scroll" id="table1"></div></div>
   </div>
   <div class="tab-content" id="tab2">
-    <div class="charts-grid">
-      <div class="chart-wrapper"><h2>各类型占比 (%)</h2><canvas id="chart2a"></canvas></div>
-      <div class="chart-wrapper"><h2>各类型规模 (GWh)</h2><canvas id="chart2b"></canvas></div>
-    </div>
-    <div class="table-wrapper"><h2>占比明细数据</h2><div class="table-scroll" id="table2"></div></div>
-  </div>
-  <div class="tab-content" id="tab3">
-    <div class="chart-wrapper"><h2>月度平均报价趋势 (元/Wh)</h2><canvas id="chart3"></canvas></div>
-    <div class="table-wrapper"><h2>平均报价明细数据</h2><div class="table-scroll" id="table3"></div></div>
+    <div class="chart-wrapper"><h2>月度平均报价趋势 (元/Wh)</h2><canvas id="chart2"></canvas></div>
+    <div class="table-wrapper"><h2>平均报价明细数据</h2><div class="table-scroll" id="table2"></div></div>
   </div>
 </div>
 <div class="footer">
@@ -130,7 +124,6 @@ fetch('data.json')
       if (v === null || v === undefined || v === '' || v === '-') return null;
       const n = Number(v); return isNaN(n) ? null : n;
     }
-    function datesFromRows(rows) { return rows.map(r => r[0]).filter(d => d); }
     function makeDataset(label, data, color, hidden) {
       return { label, data, borderColor: color, backgroundColor: color + '20', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, tension: 0.3, fill: false, hidden: hidden || false };
     }
@@ -189,47 +182,62 @@ fetch('data.json')
         }
       });
     }
+
+    // Build a year×month chart: x-axis = 1–12月, each year is a series
+    function buildYearMonthChart(rows, colIndex, canvasId, key, title) {
+      const years = {};
+      rows.forEach(row => {
+        const label = row[0];
+        const match = label.match(/^(\d{2})年(\d{1,2})月$/);
+        if (match) {
+          const year = '20' + match[1];
+          const month = parseInt(match[2]);
+          const val = num(row[colIndex]);
+          if (!years[year]) years[year] = new Array(12).fill(null);
+          years[year][month - 1] = val;
+        }
+      });
+      const yearKeys = Object.keys(years).sort();
+      const monthLabels = ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
+      const datasets = yearKeys.map((year, i) => {
+        const data = years[year];
+        return makeDataset(year + '年', data, COLORS[i], data.every(v => v === null));
+      });
+      buildChart(canvasId, key, monthLabels, datasets);
+    }
+
     // Tab 1: 中标规模
     (function() {
       const d = DATA['中标规模'];
-      const labels = datesFromRows(d.rows);
-      const datasets = [];
-      for (let i = 1; i < d.headers.length; i++) {
-        const seriesData = d.rows.map(r => num(r[i]));
-        datasets.push(makeDataset(d.headers[i], seriesData, COLORS[i-1], seriesData.every(v => v === null)));
+      // Chart 1a: 合计 (GW) — year×month
+      buildYearMonthChart(d.rows, 4, 'chart1a', 'chart1a');
+      // Chart 1b: 合计 (GWh) — year×month
+      buildYearMonthChart(d.rows, 5, 'chart1b', 'chart1b');
+      // Chart 1c: 各类型中标规模 (GWh) — continuous month labels from 占比 data
+      const shareData = DATA['占比'];
+      const typeLabels = shareData.rows.map(r => r[6]);
+      const typeNames = ['独立储能', '可再生能源储能', '集采', '用户侧', '火储联合'];
+      const typeDatasets = [];
+      for (let i = 0; i < 5; i++) {
+        const seriesData = shareData.rows.map(r => num(r[i + 7]));
+        typeDatasets.push(makeDataset(typeNames[i], seriesData, COLORS[i], seriesData.every(v => v === null)));
       }
-      buildChart('chart1', 'chart1', labels, datasets);
+      buildChart('chart1c', 'chart1c', typeLabels, typeDatasets);
+      // Table
       buildTable('table1', d.headers, d.rows);
     })();
-    // Tab 2: 占比
-    (function() {
-      const d = DATA['占比'];
-      const labels = d.rows.map(r => r[0]);
-      const pctDatasets = [];
-      for (let i = 0; i < 5; i++) {
-        const seriesData = d.rows.map(r => num(r[i+1]));
-        pctDatasets.push(makeDataset(d.headers[i+1], seriesData, COLORS[i], seriesData.every(v => v === 0 || v === null)));
-      }
-      buildChart('chart2a', 'chart2a', labels, pctDatasets);
-      const scaleDatasets = [];
-      for (let i = 0; i < 5; i++) {
-        const seriesData = d.rows.map(r => num(r[i+7]));
-        scaleDatasets.push(makeDataset(d.headers[i+7], seriesData, COLORS[i], seriesData.every(v => v === 0 || v === null)));
-      }
-      buildChart('chart2b', 'chart2b', labels, scaleDatasets);
-      buildTable('table2', d.headers, d.rows);
-    })();
-    // Tab 3: 平均报价
+
+    // Tab 2: 平均报价
     (function() {
       const d = DATA['平均报价'];
-      const labels = datesFromRows(d.rows);
+      const labels = d.rows.map(r => r[0]);
       const datasets = [];
       for (let i = 1; i < d.headers.length; i++) {
         const seriesData = d.rows.map(r => num(r[i]));
         datasets.push(makeDataset(d.headers[i], seriesData, COLORS[i-1], seriesData.every(v => v === null)));
       }
-      buildChart('chart3', 'chart3', labels, datasets);
-      buildTable('table3', d.headers, d.rows);
+      buildChart('chart2', 'chart2', labels, datasets);
+      buildTable('table2', d.headers, d.rows);
     })();
   })
   .catch(e => {
